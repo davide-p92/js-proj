@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>WASM Converter</title>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+	<style>
+        	body {
+            		font-family: sans-serif;
+            		margin: 2rem;
+        	}
+        	label {
+            		font-weight: bold;
+        	}
+        	pre {
+            		background: #f4f4f4;
+            		padding: 1rem;
+            		border-radius: 5px;
+            		overflow-x: auto;
+        	}
+    	</style>
+</head>
+<body>
+    <h1>🛠 Convert C File to WebAssembly</h1>
+
+    <label for="myfile">Please submit a C file from your computer:</label>
+    <input type="file" id="myfile" name="myfile" accept=".c" />
+
+    <h2>🔍 Disassembled Wasm Output:</h2>
+    <button id="download-wat" disabled>Download .wat</button>
+    <button id="download-zip" disabled>Download .zip</button>
+    <script src="convert_to_wasm.js" type="module"></script>
+    <pre id="wasm-output">[Awaiting conversion...]</pre>
+</body>
+</html>

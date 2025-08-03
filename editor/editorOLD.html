@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>WASM Editor</title>
+	<!--<link rel="stylesheet" href="https://codemirror.net/theme/monokai.css" />
+	-->
+	<style>
+		body { font-family: sans-serif; margin: 0; padding: 0; }
+		#editor { height: 90vh; border: 1px solid #ccc; }
+		#actions { padding: 1rem; }
+	</style>
+</head>
+<body>
+	<div id="editor"></div>
+	<div id="actions">
+		<button id="download">Download .wat</button>
+		<button id="compileZip">Compile & Download .zip</button>
+	</div>
+
+	<!--<script type="module">-->
+	<script src="./bundle.js">
+	<script type="module">
+	/*	import { EditorView, basicSetup } from "https://codemirror.net/6/basic-setup/index.js";
+		import { EditorState } from "https://codemirror.net/6/state/index.js";
+		import { StreamLanguage } from "https://codemirror.net/6/legacy-modes/index.js";
+		import { wasm } from "https://codemirror.net/6/legacy-modes/mode/wast.js";
+
+		const editor = new EditorView({
+		state: EditorState.create({
+			doc: `(module
+			(func $add (param $a i32) (param $b i32) (result i32)
+   			   local.get $a
+    			   local.get $b
+    			   i32.add)
+  			(export "add" (func $add))
+		)`,
+			extensions: [basicSetup, StreamLanguage.define(wasm)],
+		}),
+		parent: document.getElementById("editor"),
+		});*/
+
+		document.getElementById("download").addEventListener("click", () => {
+		const blob = new Blob([editor.state.doc.toString()], { type: 'text/plain' });
+		const a = document.createElement("a");
+		a.href = URL.createObjectURL(blob);
+		a.download = "my_module.wat";
+		a.click();
+
+		//Compile WAT
+		document.getElementById("compileZip").addEventListener("click", async () => {
+		const watCode = editor.state.doc.toString();
+		try {
+			const response = await fetch('/compile-wat', {
+				method: 'POST',
+				headers: { 'Content-Type': 'text/plain' },
+				body: watCode
+			});
+			if(!response || !response.ok) {
+				throw new Error (await response.text());
+			}
+
+			const blob = await response.blob();
+			const a = document.createElement("a");
+			a.href = URL.createObjectURL(blob);
+			a.download = "compiled_output.zip";
+			a.click();
+		} catch (err) {
+			alert("Compilation failed: " + err.message());
+			console.error(err);
+		}
+		});
+	});
+	</script>
+</body>
+</html>
