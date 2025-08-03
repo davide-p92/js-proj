@@ -1,7 +1,7 @@
 {
   "name": "my_proj",
   "version": "1.0.0",
-  "main": "convert_to_wasm.js",
+  "main": "server.js",
   "scripts": {
     "build": "vite build",
     "dev": "node server.js",	  
