@@ -2,14 +2,11 @@
 FROM emscripten/emsdk:4.0.11
 
 # Install wabt (for wasm2wat, wat2wasm, etc.)
-RUN apt-get update && \
-    apt-get install -y wget cmake git build-essential && \
-    git clone --recursive https://github.com/WebAssembly/wabt && \
-    cd wabt && \
-    cmake . && \
-    make && \
-    make install
-
+# Install WABT prebuilt
+RUN wget https://github.com/WebAssembly/wabt/releases/download/1.0.33/wabt-1.0.33-ubuntu.tar.gz \
+    && tar -xvzf wabt-1.0.33-ubuntu.tar.gz \
+    && cp -r wabt-1.0.33/bin/* /usr/local/bin/ \
+    && rm -rf wabt-1.0.33*
 #Set working dir
 WORKDIR /app
 
