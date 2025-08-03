@@ -21,9 +21,21 @@
 </head>
 
 <body>
+    <button id="download-wat">Download .wat</button>
     <!-- Editor goes in here -->
     <div id="editor"></div>
-
+    <script>
+    	 let editorView;
+	 document.getElementById("download-wat").addEventListener("click", ()=> {
+		 const content = editorView.state.doc.toString();
+		 const blob = new Blob([content], { type: 'text/plain' });
+		 const a = document.createElement("a");
+		 a.href = URL.createObjectURL(blob);
+		 a.download = "program.wat";
+		 a.click();
+	 });
+    </script>
+    <!--CodeMirror 6 init-->
     <!-- CodeMirror 6 -->
     <script type="module" src="editor.js"></script>
     <script>
@@ -36,12 +48,15 @@
     			   i32.add)
   			(export "add" (func $add))
 		)`);
-        	const view = createEditorView(initialState, document.getElementById("editor"));
+        	editorView = createEditorView(initialState, document.getElementById("editor"));
 
-        // Programmatically change editor contents
-        console.log("Before:\n", view.state.doc.toString())
-        view.dispatch({ changes: { from: 0, insert: ";; Your WAT file \n" } })
-        console.log("After:\n", view.state.doc.toString());
+		//content to fill the downloaded wat file
+		//const content = view.state.doc.toString();
+        
+		// Programmatically change editor contents
+        	console.log("Before:\n", editorView.state.doc.toString())
+        	editorView.dispatch({ changes: { from: 0, insert: ";; Your WAT file \n" } })
+        	console.log("After:\n", editorView.state.doc.toString());
         });
     </script>
 </body>
