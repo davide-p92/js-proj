@@ -15,6 +15,10 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
+exec('which emcc && which wasm2wat', (err, stdout, stderr) => {
+  console.log('Tools check:', stdout || stderr);
+});
+
 //Serve static files (frontend)
 app.use(express.static('public'));
 
